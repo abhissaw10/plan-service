@@ -12,12 +12,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.example.planservice.config.TestData.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(PlanController.class)
 public class PlanControllerTest {
 
     @Autowired
@@ -36,6 +35,16 @@ public class PlanControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(planRequest())))
                 .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string(TEST_PLAN));
+    }
+
+    @Test
+    public void updatePlanWithRequestBody_shouldReturn200OK() throws Exception {
+        when(planService.update(planRequest(),TEST_PLAN)).thenReturn(TEST_PLAN);
+        mockMvc.perform(put("/v1/plans/"+TEST_PLAN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(planRequest())))
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(TEST_PLAN));
     }
 
@@ -77,6 +86,14 @@ public class PlanControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(planResponseByOwner())));
+    }
+
+    @Test
+    public void givenPlanId_shouldReturnMatchingPlan() throws Exception{
+        when(planService.get(TEST_PLAN)).thenReturn(singlePlanResponse());
+        mockMvc.perform((get("/v1/plans/"+TEST_PLAN)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(mapper.writeValueAsString(singlePlanResponse())));
     }
 
 }
