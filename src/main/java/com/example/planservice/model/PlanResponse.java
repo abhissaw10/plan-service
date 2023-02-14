@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @Data
 public class PlanResponse {
-    private String planId;
+    private Long planId;
     private List<GoalResponse> goals;
     private String productName;
     private String productOwner;

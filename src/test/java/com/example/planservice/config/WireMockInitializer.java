@@ -14,12 +14,13 @@ import org.springframework.http.MediaType;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.example.planservice.config.TestData.initiativeResponseMapWiremock;
-import static com.github.tomakehurst.wiremock.client.WireMock.matching;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 
 
 @Profile("integration-test")
 
 public class WireMockInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
 
 
     @SneakyThrows
@@ -29,7 +30,7 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
         String json = new ObjectMapper().writeValueAsString(initiativeResponseMapWiremock);
         server.stubFor(WireMock
                 .get("/v1/initiatives/byIds")
-                .withQueryParam("ids", matching("^[0-9]+(,[0-9]+)*$"))
+                .withQueryParam("ids", equalTo("1"))
                 .willReturn(WireMock.aResponse()
                         .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                         .withBody(json)));
@@ -41,6 +42,8 @@ public class WireMockInitializer implements ApplicationContextInitializer<Config
                 server.stop();
             }
         });
-        TestPropertyValues.of("initiative.service.url=http://localhost:"+server.port()).applyTo(applicationContext);
+        String initiativeServiceURL = "initiative.service.url=http://localhost:" + server.port();
+
+        TestPropertyValues.of(initiativeServiceURL).applyTo(applicationContext);
     }
 }

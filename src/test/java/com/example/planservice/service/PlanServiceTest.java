@@ -34,15 +34,15 @@ public class PlanServiceTest {
     @Test
     public void givenPlanRequest_shouldCreatePlan(){
         when(planRepository.save(any(Plan.class))).thenReturn(Plan.builder().id(TEST_PLAN).build());
-        String planId = planService.create(PlanRequest.builder().build());
+        Long planId = planService.create(PlanRequest.builder().build());
         assertThat(planId).isEqualTo(TEST_PLAN);
     }
 
     @Test
     public void shouldReturnAllPlans(){
         when(planRepository.findAll()).thenReturn(planList());
-        when(goalService.get("1")).thenReturn(dummyGoalResponse1);
-        when(goalService.get("2")).thenReturn(dummyGoalResponse2);
+        when(goalService.get(TEST_GOAL_ID)).thenReturn(dummyGoalResponse1);
+        when(goalService.get(TEST_GOAL_2)).thenReturn(dummyGoalResponse2);
         List<PlanResponse> planList = planService.getAll(null,null);
         assertThat(planList.size()).isEqualTo(1);
         assertThat(planList.get(0).getGoals().get(0).getName()).isEqualTo(TEST_GOAL);
@@ -75,7 +75,7 @@ public class PlanServiceTest {
 
     @Test
     public void givenPlanId_shouldReturnMatchingPlanWithoutDependencies(){
-        when(planRepository.findById(anyString())).thenReturn(Optional.of(plan()));
+        when(planRepository.findById(anyLong())).thenReturn(Optional.of(plan()));
         PlanResponse response = planService.get(TEST_PLAN);
         assertThat(response).isNotNull();
         assertThat(response.getPlanId()).isEqualTo(TEST_PLAN);
@@ -84,8 +84,8 @@ public class PlanServiceTest {
 
     @Test
     public void givenPlanId_shouldReturnMatchingPlanWithDependentInitiatives(){
-        when(planRepository.findById(anyString())).thenReturn(Optional.of(plan()));
-        when(goalService.get("1")).thenReturn(goalResponse);
+        when(planRepository.findById(anyLong())).thenReturn(Optional.of(plan()));
+        when(goalService.get(TEST_GOAL_ID)).thenReturn(goalResponse);
         PlanResponse response = planService.get(TEST_PLAN);
         assertThat(response.getGoals().get(0).getInitiatives().get(0).getTitle()).isEqualTo(TEST_TITLE_1);
         assertThat(response.getGoals().get(0).getInitiatives().get(1).getTitle()).isEqualTo(TEST_TITLE_2);

@@ -6,6 +6,7 @@ import com.example.planservice.service.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class PlanController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/v1/plans")
-    public String  create(@RequestBody PlanRequest planRequest){
+    public Long  create(@Valid @RequestBody PlanRequest planRequest){
         return planService.create(planRequest);
     }
 
@@ -33,7 +34,7 @@ public class PlanController {
             @ApiResponse(responseCode = "200", description = "Returns the project plan id for tje created project plan")
     })
     @PutMapping("/v1/plans/{planId}")
-    public String  update(@RequestBody PlanRequest planRequest, @PathVariable String planId){
+    public Long  update(@Valid @RequestBody PlanRequest planRequest, @PathVariable Long planId){
         return planService.update(planRequest,planId);
     }
 
@@ -53,7 +54,7 @@ public class PlanController {
             @ApiResponse(responseCode = "404", description = "Product plan not found for the given plan id")
     })
     @GetMapping("/v1/plans/{planId}")
-    public PlanResponse get(@PathVariable String planId){
+    public PlanResponse get(@PathVariable Long planId){
         return planService.get(planId);
     }
 }

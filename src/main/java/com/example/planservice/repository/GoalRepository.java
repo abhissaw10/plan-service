@@ -1,11 +1,13 @@
 package com.example.planservice.repository;
 
 import com.example.planservice.entity.Goal;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface GoalRepository extends MongoRepository<Goal,String> {
+@Repository
+public interface GoalRepository extends JpaRepository<Goal,Long> {
 
     List<Goal> findByName(String name);
 }

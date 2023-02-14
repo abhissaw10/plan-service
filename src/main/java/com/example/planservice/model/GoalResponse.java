@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Builder
 @Data
 public class GoalResponse {
-    private String id;
+    private Long id;
     private String name;
     private List<Initiative> initiatives;
 
@@ -34,6 +34,6 @@ public class GoalResponse {
     }
 
     public static List<Initiative> getGoalInitiatives(Goal goal,Map<Long,Initiative> initiativeMap){
-        return goal.getInitiatives().stream().map(i->initiativeMap.get(i)).collect(Collectors.toList());
+        return goal.getInitiatives().stream().map(i->initiativeMap.get(i.getInitiative())).collect(Collectors.toList());
     }
 }

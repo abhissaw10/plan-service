@@ -23,11 +23,6 @@ services:
     depends_on:
       - postgres
 
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-
   myredis:
     image: redis
     ports:
@@ -37,12 +32,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATA_MONGODB_URI: "mongodb://mongo/plan"
       INITIATIVE_SERVICE_URL: "http://initiative-service:8081"
       SPRING_DATA_REDIS_HOST: "myredis"
-
-
     depends_on:
       - initiative-service
-      - mongo
       - myredis

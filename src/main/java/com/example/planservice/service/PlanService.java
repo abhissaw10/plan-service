@@ -2,6 +2,7 @@ package com.example.planservice.service;
 
 import com.example.planservice.controller.ResourceNotFoundException;
 import com.example.planservice.entity.Plan;
+import com.example.planservice.entity.PlanGoal;
 import com.example.planservice.model.GoalResponse;
 import com.example.planservice.model.PlanRequest;
 import com.example.planservice.model.PlanResponse;
@@ -25,12 +26,12 @@ public class PlanService {
     final PlanRepository planRepository;
     final GoalService goalService;
 
-    public String create(PlanRequest planRequest) {
-        String planId = planRepository.save(toPlan(planRequest)).getId();
+    public Long create(PlanRequest planRequest) {
+        Long planId = planRepository.save(toPlan(planRequest)).getId();
         return planId;
     }
 
-    public String update(PlanRequest planRequest, String planId) {
+    public Long update(PlanRequest planRequest, Long planId) {
         get(planId);//Check if the plan id is valid. Throw ResourceNotFoundException otherwise
         Plan planEntity = toPlan(planRequest);
         planEntity.setId(planId);
@@ -61,7 +62,7 @@ public class PlanService {
                 .collect(Collectors.toList());
     }
 
-    public PlanResponse get(String planId) {
+    public PlanResponse get(Long planId) {
         Optional<Plan> plan = planRepository.findById(planId);
         return toPlanResponse(plan.orElseThrow(()->new ResourceNotFoundException(PLAN_NOT_FOUND, PLAN_NOT_FOUND_MSG)),getGoals(plan.get()));
     }
@@ -71,8 +72,8 @@ public class PlanService {
     private List<GoalResponse> getGoals(Plan plan){
         List<GoalResponse> goalResponseList = new ArrayList<>();
         if(plan.getGoals()!=null && plan.getGoals().size()>0){
-            for(String goalId: plan.getGoals()){
-                GoalResponse goalResponse = goalService.get(goalId);
+            for(PlanGoal goal: plan.getGoals()){
+                GoalResponse goalResponse = goalService.get(goal.getGoalId());
                 goalResponseList.add(goalResponse);
             }
         }

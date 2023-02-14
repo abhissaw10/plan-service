@@ -6,6 +6,7 @@ import com.example.planservice.service.GoalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,12 @@ public class GoalController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/v1/goals")
-    public String create(@RequestBody GoalRequest goalRequest){
+    public Long create(@Valid @RequestBody GoalRequest goalRequest){
         return goalService.create(goalRequest);
     }
 
     @PutMapping("/v1/goals/{goalId}")
-    public String create(@RequestBody GoalRequest goalRequest, @PathVariable String goalId){
+    public Long create(@Valid @RequestBody GoalRequest goalRequest, @PathVariable Long goalId){
         return goalService.update(goalRequest,goalId);
     }
 
@@ -47,7 +48,7 @@ public class GoalController {
             @ApiResponse(responseCode = "404", description = "No goal found for the given id")
     })
     @GetMapping("/v1/goals/{id}")
-    public GoalResponse get(@PathVariable String id) throws ResourceNotFoundException{
+    public GoalResponse get(@PathVariable Long id) throws ResourceNotFoundException{
         return goalService.get(id);
     }
 

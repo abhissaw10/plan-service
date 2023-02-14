@@ -1,0 +1,47 @@
+type Query{
+    allGoals: [GoalResponse]
+    findOne(id: ID!): GoalResponse
+    allPlans: [PlanResponse]
+
+}
+
+type Mutation{
+    createGoal(goalRequest: GoalRequest!): Int!
+    createPlan(planRequest: PlanRequest!): Int!
+}
+input PlanRequest{
+    productName: String!
+    productOwner: String!
+    financialYear: String!
+    goals: [Int]
+}
+
+
+type PlanResponse{
+    planId: ID!
+    goals: [GoalResponse]
+    productName: String
+    productOwner: String
+    financialYear: String
+}
+
+type GoalResponse{
+    id: ID!
+    name: String
+    initiatives: [Initiative]
+}
+type Initiative{
+    id: ID!
+    title: String
+    successCriteria: String
+    startDate : String
+    endDate: String
+    status: String
+    jiraId: Int
+    dependencies: [Initiative]
+}
+
+input GoalRequest{
+    name: String
+    initiativeIds: [Int]
+}

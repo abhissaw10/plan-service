@@ -1,13 +1,13 @@
 package com.example.planservice.repository;
 
 import com.example.planservice.entity.Plan;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PlanRepository extends MongoRepository<Plan,String> {
+public interface PlanRepository extends JpaRepository<Plan,Long> {
 
     List<Plan> findByProductName(String productName);
     List<Plan> findByProductOwner(String productOwner);

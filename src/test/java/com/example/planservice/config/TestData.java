@@ -1,7 +1,9 @@
 package com.example.planservice.config;
 
 import com.example.planservice.entity.Goal;
+import com.example.planservice.entity.InitiativeEntity;
 import com.example.planservice.entity.Plan;
+import com.example.planservice.entity.PlanGoal;
 import com.example.planservice.model.*;
 
 import java.time.LocalDate;
@@ -9,19 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 public class TestData {
-    public static final String TEST_PLAN_1 = "test_plan_1";
-    public static String TEST_PLAN = "test_plan";
+    public static final Long TEST_PLAN_1 = 1L;
+    public static Long TEST_PLAN = 1L;
 
     public static String TEST_GOAL = "test_goal";
-    public static String TEST_GOAL_ID = "test_goal_id";
-    public static String TEST_GOAL_2 = "test_goal_2";
+    public static Long TEST_GOAL_ID = 1L;
+    public static Long TEST_GOAL_2 = 2L;
 
     public static String TEST_PRODUCT_NAME = "test_product_name";
     public static String TEST_PRODUCT_NAME_2 = "test_product_name_2";
     public static String TEST_PRODUCT_OWNER = "test_product_owner";
     public static String TEST_PRODUCT_OWNER_2 = "test_product_owner_2";
 
-    public static String TEST_FIN_YEAR = "29-01-2023";
+    public static String TEST_FIN_YEAR = "2023";
 
     public static String TEST_STATUS = "test_status";
     public static LocalDate TEST_START_DATE = LocalDate.of(2023,01,29);
@@ -35,7 +37,7 @@ public class TestData {
         return List.of(Plan
                 .builder()
                 .id(TEST_PLAN)
-                .goals(List.of("1","2"))
+                .goals(List.of(PlanGoal.builder().goalId(1L).build(),PlanGoal.builder().goalId(2L).build()))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -46,7 +48,7 @@ public class TestData {
         return Plan
                 .builder()
                 .id(TEST_PLAN)
-                .goals(List.of("1"))
+                .goals(List.of(PlanGoal.builder().goalId(1L).build()))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -55,9 +57,19 @@ public class TestData {
     public static PlanRequest planRequest(){
         return PlanRequest
                 .builder()
-                .goals(List.of("1","2"))
+                .goals(List.of(1L,2L))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
+                .financialYear(TEST_FIN_YEAR)
+                .build();
+    }
+
+    public static PlanRequest invalid_planRequest(){
+        return PlanRequest
+                .builder()
+                .goals(List.of(1L,2L))
+                //.productName(TEST_PRODUCT_NAME)
+                //.productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
                 .build();
     }
@@ -87,7 +99,7 @@ public class TestData {
                 PlanResponse
                 .builder()
                 .planId(TEST_PLAN_1)
-                .goals(List.of(GoalResponse.builder().name(TEST_GOAL_2).build()))
+                .goals(List.of(GoalResponse.builder().name(TEST_GOAL).build()))
                 .productName(TEST_PRODUCT_NAME_2)
                 .productOwner(TEST_PRODUCT_OWNER_2)
                 .financialYear(TEST_FIN_YEAR)
@@ -147,6 +159,11 @@ public class TestData {
             .initiativeIds(List.of(1L,2L))
             .build();
 
+    public  static GoalRequest invalid_goalRequest = GoalRequest
+            .builder()
+            .initiativeIds(List.of(1L,2L))
+            .build();
+
     public  static GoalResponse goalResponse = GoalResponse
             .builder()
             .name(TEST_GOAL)
@@ -163,18 +180,18 @@ public class TestData {
     public  static GoalResponse dummyGoalResponse1 = GoalResponse
             .builder()
             .name(TEST_GOAL)
-            .id("1")
+            .id(1L)
             .build();
     public  static GoalResponse dummyGoalResponse2 = GoalResponse
             .builder()
-            .name(TEST_GOAL_2)
-            .id("2")
+            .name(TEST_GOAL)
+            .id(2L)
             .build();
 
     public  static Goal goalEntity = Goal
             .builder()
-            .name(TEST_GOAL_2)
-            .goalId("2")
-            .initiatives(List.of(1L))
+            .name(TEST_GOAL)
+            .goalId(2L)
+            .initiatives(List.of(InitiativeEntity.builder().initiative(1L).build()))
             .build();
 }

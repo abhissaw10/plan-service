@@ -2,17 +2,15 @@ package com.example.planservice.service;
 
 
 import com.example.planservice.model.Initiative;
-import feign.Headers;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.HttpExchange;
 
 import java.util.Map;
 
-@FeignClient(name = "initiativeservice", url = "${initiative.service.url}")
+@HttpExchange(url = "${initiative.service.url}", accept = MediaType.APPLICATION_JSON_VALUE, contentType = MediaType.APPLICATION_JSON_VALUE)
 public interface InitiativeClient {
-    @GetMapping(value = "/v1/initiatives/byIds")
-    @Headers({"Accept: " + MediaType.APPLICATION_JSON_VALUE, "Content-Type: " + MediaType.APPLICATION_JSON_VALUE})
+    @GetExchange(value = "/v1/initiatives/byIds")
     Map<Long,Initiative> getInitiatives(@RequestParam("ids") String... ids);
 }

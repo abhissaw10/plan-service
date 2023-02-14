@@ -1,29 +1,36 @@
 package com.example.planservice.entity;
 
-import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Repository
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@Entity
+@Table(name = "goal")
 public class Goal {
+
     @Id
-    String goalId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "goal_sequence")
+    Long goalId;
     String name;
-    List<Long> initiatives;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "initiatives")
+    List<InitiativeEntity> initiatives;
 
     public static Set<Long> getUniqueInitiativeIdPerGoal(Goal goal) {
             Set<Long> uniqueInitiativeIds = new HashSet();
             if(goal.getInitiatives()!=null) {
-                for (Long id : goal.getInitiatives()) {
-                    uniqueInitiativeIds.add(id);
+                for (InitiativeEntity id : goal.getInitiatives()) {
+                    uniqueInitiativeIds.add(id.getInitiative());
                 }
             }
             return uniqueInitiativeIds;

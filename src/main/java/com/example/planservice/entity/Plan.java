@@ -1,23 +1,26 @@
 package com.example.planservice.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Builder
 @Data
-@Repository
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "plan")
 public class Plan {
     @Id
-    private String id;
-    private List<String> goals;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_sequence")
+    private Long id;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "goals")
+    private List<PlanGoal> goals;
     private String productName;
     private String productOwner;
     private String financialYear;

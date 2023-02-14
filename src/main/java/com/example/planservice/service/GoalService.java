@@ -7,7 +7,6 @@ import com.example.planservice.model.GoalResponse;
 import com.example.planservice.model.Initiative;
 import com.example.planservice.repository.GoalRepository;
 import com.example.planservice.repository.InitiativeRepository;
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +27,11 @@ public class GoalService {
 
     final InitiativeRepository initiativeRepository;
 
-    public String create(GoalRequest goalRequest) {
+    public Long create(GoalRequest goalRequest) {
         return goalRepository.save(GoalRequest.toGoal(goalRequest)).getGoalId();
     }
 
-    public String update(GoalRequest goalRequest, String goalId) {
+    public Long update(GoalRequest goalRequest, Long goalId) {
         Goal goal = GoalRequest.toGoal(goalRequest);
         get(goalId);
         goal.setGoalId(goalId);
@@ -63,7 +62,7 @@ public class GoalService {
         return initiativeResponse;
     }
 
-    public GoalResponse get(String goalId) {
+    public GoalResponse get(Long goalId) {
         Goal goal = goalRepository.findById(goalId).orElseThrow(()->new ResourceNotFoundException(GOAL_NOT_FOUND,GOAL_NOT_FOUND_MSG));
         Set<Long> uniqueIds = getUniqueInitiativeIdPerGoal(goal);
         Map<Long, Initiative> initiativeMap = null;
@@ -72,25 +71,21 @@ public class GoalService {
             for(Long id: uniqueIds){
                 saveToRedis(initiativeMap.get(id));
             }
-        }catch (FeignException e){
+        }catch (Exception e){
             initiativeMap = new HashMap<>();
             for(Long id: uniqueIds){
-                readFromRedis(id);
+                initiativeMap.put(id,readFromRedis(id));
             }
         }
         return toGoalResponse(goal,initiativeMap);
     }
 
-    //@CachePut(value = "initiativeCache", key = "#initiative.id")
     public void saveToRedis(Initiative initiative){
-
         initiativeRepository.save(initiative);
     }
 
-    //@Cacheable(value = "initiativeCache", key="#id")
     public Initiative readFromRedis(Long id){
         Optional<Initiative> initiativeOptional = initiativeRepository.findById(id);
         return initiativeOptional.isPresent()?initiativeOptional.get():null;
-
     }
 }

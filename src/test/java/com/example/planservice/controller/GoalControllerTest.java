@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(GoalController.class)
+//@ExtendWith(SpringExtension.class)
 public class GoalControllerTest {
 
     @Autowired
@@ -34,12 +35,22 @@ public class GoalControllerTest {
 
     @Test
     public void givenRequestBody_shouldCreateGoal() throws Exception {
-        when(goalService.create(goalRequest)).thenReturn(TEST_GOAL);
+        when(goalService.create(goalRequest)).thenReturn(TEST_GOAL_ID);
         mockMvc
                 .perform(post("/v1/goals")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(goalRequest)))
                 .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void givenInvalidRequestBody_shouldThrowError() throws Exception {
+        when(goalService.create(invalid_goalRequest)).thenReturn(TEST_GOAL_ID);
+        mockMvc
+                .perform(post("/v1/goals")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(invalid_goalRequest)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

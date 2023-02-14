@@ -9,4 +9,10 @@ public class PlanConstants {
     public static String GOAL_NOT_FOUND_MSG = "Goal does not Exist";
     public static String PLAN_NOT_FOUND_MSG = "Plan does not exist";
     public static String PLANS_NOT_FOUND_MSG = "No Plans exist";
+
+    public static String BAD_REQUEST_001 ="ERR_BAD_REQUEST_001";
+
+    public static String ERROR_MESSAGE= "Errors found";
+
+    public static String PRODUCT_NAME_ERROR = "Please specify product name";
 }
