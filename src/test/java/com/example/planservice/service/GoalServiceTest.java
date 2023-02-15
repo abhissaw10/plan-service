@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static com.example.planservice.config.TestData.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +47,7 @@ public class GoalServiceTest {
                         .goalId(TEST_GOAL_ID)
                         .name(TEST_GOAL)
                         .build());
-        Long id = goalService.create(GoalRequest
+        Integer id = goalService.create(GoalRequest
                 .builder()
                 .name(TEST_GOAL)
                 .build());
@@ -80,7 +80,7 @@ public class GoalServiceTest {
 
     @Test
     public void getGoal(){
-        when(goalRepository.findById(anyLong())).thenReturn(
+        when(goalRepository.findById(anyInt())).thenReturn(
                         Optional.of(Goal
                                 .builder()
                                 .name(TEST_GOAL)
@@ -98,7 +98,7 @@ public class GoalServiceTest {
         when(initiativeClient.getInitiatives("1","2")).thenReturn(TestData.initiativeResponseMap);
         when(initiativeRepository.save(initiativeResponse)).thenReturn(initiativeResponse);
         when(initiativeRepository.save(initiativeResponse2)).thenReturn(initiativeResponse2);
-        GoalResponse goal = goalService.get(1L);
+        GoalResponse goal = goalService.get(1);
         assertThat(goal).isNotNull();
         assertThat(goal.getInitiatives().get(0).getId()).isEqualTo(1L);
     }

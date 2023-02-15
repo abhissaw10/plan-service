@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @Builder
 public class PlanRequest {
-    private List<Long> goals;
+    private List<Integer> goals;
     //@NotBlank(message = "Please specify product name")
     @NotNull(message = "Please specify product name")
     private String productName;
@@ -33,10 +33,10 @@ public class PlanRequest {
                 .build();
     }
 
-    private static List<PlanGoal> toPlanGoalEntity(List<Long> ids){
+    private static List<PlanGoal> toPlanGoalEntity(List<Integer> ids){
         if(ids!=null && ids.size()>0){
             List<PlanGoal> planGoals = new ArrayList<>();
-            for(Long id: ids){
+            for(Integer id: ids){
                 planGoals.add(PlanGoal.builder().goalId(id).build());
             }
             return planGoals;

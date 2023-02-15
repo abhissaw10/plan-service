@@ -23,11 +23,11 @@ public class GoalGraphQLController {
 
     @QueryMapping(value = "findOne")
     public GoalResponse findOne(@Argument Integer id){
-        return goalService.get(Long.valueOf(id));
+        return goalService.get(id);
     }
 
     @MutationMapping(value = "createGoal")
-    public Long createGoal(@Argument GoalRequest goalRequest){
+    public Integer createGoal(@Argument GoalRequest goalRequest){
         return goalService.create(goalRequest);
     }
 

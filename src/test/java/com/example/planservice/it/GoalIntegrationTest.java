@@ -81,16 +81,16 @@ public class GoalIntegrationTest {
 
     @Test
     public void givenValidGoalRequest_shouldCreateGoal(){
-        ResponseEntity<Long> exchange = createGoal(goalRequestIntegration);
+        ResponseEntity<Integer> exchange = createGoal(goalRequestIntegration);
         assertThat(exchange.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(goalRepository.findById(exchange.getBody()).get().getInitiatives().size()).isEqualTo(1);
     }
 
-    private ResponseEntity<Long> createGoal(GoalRequest requestBody) {
+    private ResponseEntity<Integer> createGoal(GoalRequest requestBody) {
         HttpEntity entity = new HttpEntity(requestBody,new HttpHeaders());
-        ResponseEntity<Long> exchange = testRestTemplate
+        ResponseEntity<Integer> exchange = testRestTemplate
                 .exchange("/v1/goals",
-                        HttpMethod.POST, entity, Long.class);
+                        HttpMethod.POST, entity, Integer.class);
         return exchange;
     }
 
@@ -108,7 +108,7 @@ public class GoalIntegrationTest {
                     .respond(response().withBody(json));
         }
 
-        Long goalId = createGoal(goalRequestIntegration).getBody();
+        Integer goalId = createGoal(goalRequestIntegration).getBody();
         initiativeRepository.save(TestData.initiativeResponse);
         Goal goalDB = goalRepository.findById(goalId).get();
         String response = testRestTemplate.getForObject("/v1/goals/"+goalId, String.class);

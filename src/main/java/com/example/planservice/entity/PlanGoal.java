@@ -16,5 +16,5 @@ public class PlanGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Long goalId;
+    private Integer goalId;
 }

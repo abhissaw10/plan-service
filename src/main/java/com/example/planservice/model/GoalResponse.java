@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Builder
 @Data
 public class GoalResponse {
-    private Long id;
+    private Integer id;
     private String name;
     private List<Initiative> initiatives;
 

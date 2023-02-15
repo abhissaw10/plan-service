@@ -15,8 +15,8 @@ public class TestData {
     public static Long TEST_PLAN = 1L;
 
     public static String TEST_GOAL = "test_goal";
-    public static Long TEST_GOAL_ID = 1L;
-    public static Long TEST_GOAL_2 = 2L;
+    public static Integer TEST_GOAL_ID = 1;
+    public static Integer TEST_GOAL_2 = 2;
 
     public static String TEST_PRODUCT_NAME = "test_product_name";
     public static String TEST_PRODUCT_NAME_2 = "test_product_name_2";
@@ -37,7 +37,7 @@ public class TestData {
         return List.of(Plan
                 .builder()
                 .id(TEST_PLAN)
-                .goals(List.of(PlanGoal.builder().goalId(1L).build(),PlanGoal.builder().goalId(2L).build()))
+                .goals(List.of(PlanGoal.builder().goalId(1).build(),PlanGoal.builder().goalId(2).build()))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -48,7 +48,7 @@ public class TestData {
         return Plan
                 .builder()
                 .id(TEST_PLAN)
-                .goals(List.of(PlanGoal.builder().goalId(1L).build()))
+                .goals(List.of(PlanGoal.builder().goalId(1).build()))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -57,7 +57,7 @@ public class TestData {
     public static PlanRequest planRequest(){
         return PlanRequest
                 .builder()
-                .goals(List.of(1L,2L))
+                .goals(List.of(1,2))
                 .productName(TEST_PRODUCT_NAME)
                 .productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -67,7 +67,7 @@ public class TestData {
     public static PlanRequest invalid_planRequest(){
         return PlanRequest
                 .builder()
-                .goals(List.of(1L,2L))
+                .goals(List.of(1,2))
                 //.productName(TEST_PRODUCT_NAME)
                 //.productOwner(TEST_PRODUCT_OWNER)
                 .financialYear(TEST_FIN_YEAR)
@@ -180,18 +180,20 @@ public class TestData {
     public  static GoalResponse dummyGoalResponse1 = GoalResponse
             .builder()
             .name(TEST_GOAL)
-            .id(1L)
+            .id(1)
             .build();
     public  static GoalResponse dummyGoalResponse2 = GoalResponse
             .builder()
             .name(TEST_GOAL)
-            .id(2L)
+            .id(2)
             .build();
+
+    public static List<GoalResponse> goalResponses = List.of(goalResponse);
 
     public  static Goal goalEntity = Goal
             .builder()
             .name(TEST_GOAL)
-            .goalId(2L)
+            .goalId(2)
             .initiatives(List.of(InitiativeEntity.builder().initiative(1L).build()))
             .build();
 }

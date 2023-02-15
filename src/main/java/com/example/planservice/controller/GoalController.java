@@ -24,12 +24,12 @@ public class GoalController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/v1/goals")
-    public Long create(@Valid @RequestBody GoalRequest goalRequest){
+    public Integer create(@Valid @RequestBody GoalRequest goalRequest){
         return goalService.create(goalRequest);
     }
 
     @PutMapping("/v1/goals/{goalId}")
-    public Long create(@Valid @RequestBody GoalRequest goalRequest, @PathVariable Long goalId){
+    public Integer update(@Valid @RequestBody GoalRequest goalRequest, @PathVariable Integer goalId){
         return goalService.update(goalRequest,goalId);
     }
 
@@ -48,7 +48,7 @@ public class GoalController {
             @ApiResponse(responseCode = "404", description = "No goal found for the given id")
     })
     @GetMapping("/v1/goals/{id}")
-    public GoalResponse get(@PathVariable Long id) throws ResourceNotFoundException{
+    public GoalResponse get(@PathVariable Integer id) throws ResourceNotFoundException{
         return goalService.get(id);
     }
 

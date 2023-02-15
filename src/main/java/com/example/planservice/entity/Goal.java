@@ -20,7 +20,7 @@ public class Goal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "goal_sequence")
-    Long goalId;
+    Integer goalId;
     String name;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "initiatives")

@@ -27,11 +27,11 @@ public class GoalService {
 
     final InitiativeRepository initiativeRepository;
 
-    public Long create(GoalRequest goalRequest) {
+    public Integer create(GoalRequest goalRequest) {
         return goalRepository.save(GoalRequest.toGoal(goalRequest)).getGoalId();
     }
 
-    public Long update(GoalRequest goalRequest, Long goalId) {
+    public Integer update(GoalRequest goalRequest, Integer goalId) {
         Goal goal = GoalRequest.toGoal(goalRequest);
         get(goalId);
         goal.setGoalId(goalId);
@@ -62,7 +62,7 @@ public class GoalService {
         return initiativeResponse;
     }
 
-    public GoalResponse get(Long goalId) {
+    public GoalResponse get(Integer goalId) {
         Goal goal = goalRepository.findById(goalId).orElseThrow(()->new ResourceNotFoundException(GOAL_NOT_FOUND,GOAL_NOT_FOUND_MSG));
         Set<Long> uniqueIds = getUniqueInitiativeIdPerGoal(goal);
         Map<Long, Initiative> initiativeMap = null;

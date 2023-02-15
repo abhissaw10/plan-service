@@ -1,6 +1,6 @@
 type Query{
     allGoals: [GoalResponse]
-    findOne(id: ID!): GoalResponse
+    findOne(id: ID): GoalResponse
     allPlans: [PlanResponse]
 
 }
